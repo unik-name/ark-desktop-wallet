@@ -60,6 +60,9 @@ function createWindow () {
   mainWindowState.manage(mainWindow)
   // and load the index.html of the app.
   mainWindow.loadURL(`file://${__dirname}/client/app/index.html`)
+  mainWindow.webContents.openDevTools()
+  BrowserWindow.addDevToolsExtension('/Users/g-space/Library/Application Support/Google/Chrome/Default/Extensions/ighdmehidhipcmcojjgiloacoafjmpfk/0.10.9_0')
+  BrowserWindow.addDevToolsExtension('/Users/g-space/Library/Application Support/Google/Chrome/Default/Extensions/elgalmkoelokbchhkhacckoklkejnhcd/1.21.0_0/')
   mainWindow.once('ready-to-show', () => {
     mainWindow.show()
   })

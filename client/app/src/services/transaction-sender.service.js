@@ -80,7 +80,8 @@
           ledger: selectedAccount.ledger,
           publicKey: selectedAccount.publicKey,
           masterpassphrase: $scope.data.passphrase.trim(),
-          fromAddress: $scope.data.fromAddress
+          fromAddress: $scope.data.fromAddress,
+          fromUnikname: '@bob'
         }
 
         if ($scope.data.secondPassphrase) {
@@ -90,7 +91,8 @@
         dialogService.hide()
 
         if (tab === 'single') {
-          data.toAddress = $scope.data.toAddress.trim()
+          data.toAddress = $scope.data.resolvedUnikname.resolvedAddress.address.trim()
+          data.toUnikname = $scope.data.unikname.trim()
           data.amount = Number(utilityService.arkToArktoshi(parseFloat($scope.data.amount), 0))
           data.smartbridge = $scope.data.smartbridge
 
@@ -113,7 +115,9 @@
         fromLabel: selectedAccount ? selectedAccount.username : null,
         secondSignature: selectedAccount ? selectedAccount.secondSignature : '',
         passphrase: '',
-        secondPassphrase: ''
+        secondPassphrase: '',
+        unikname:'',
+        resolvedAddress:''
       }
       $scope.totalBalance = getTotalBalance(0)
       $scope.remainingBalance = getTotalBalance(0) // <-- initial value, this will change by directive
@@ -268,6 +272,36 @@
           }
         }
         return contacts
+      }
+
+      $scope.resolveAddress = ()=>{
+        let unikname = $scope.data.unikname;
+
+        let resolvedUnikname = resolveUnikname(unikname);
+
+        $scope.data.resolvedUnikname = resolvedUnikname;
+      }
+
+      function resolveUnikname(unikname){
+        // TODO Call unikname web-service
+        return {
+          profile:{
+            unikname:'@fabien',
+            country:'France',
+            picture:'http://www.google.com',
+            creationDate:''
+          },
+          security:{
+            trust:4,
+            unik:true
+          },
+          type:'indiv',
+          supportedCoins:['BTC','ETH','ARK'],
+          resolvedAddress:{
+            label:'',
+            address:'DBxtHVVGxGn43HQDMmF7fAd9JzQe4yJVvs'
+          }
+        }
       }
 
       dialogService.open({

@@ -19,13 +19,16 @@
             <b translate>Type</b><span class="md-secondary">{{validate.label}}</span>
           </md-list-item>
           <md-list-item>
-            <b translate>From</b><span class="md-secondary">{{validate.transaction.senderId}}</span>
+            <b translate>From</b>
+              <span class="md-secondary">
+                {{validate.transaction.senderUnikname}} - {{validate.transaction.senderId}}
+              </span>
           </md-list-item>
           <md-list-item ng-if="validate.transaction.type==0">
             <b translate>To</b>
             <span class="md-secondary">
               <span style="vertical-align: middle;">
-              {{validate.transaction.recipientId}}
+              {{ validate.transaction.recipientUnikname}} - {{validate.transaction.recipientId}}
               </span>
               <md-icon md-font-library="material-icons" ng-if="validate.resolvedAccount && validate.resolvedAccount.name">
                 {{validate.resolvedAccount.icon}}

@@ -18,6 +18,8 @@
 
       transaction.fee = fee
       transaction.senderId = config.fromAddress
+      transaction.senderUnikname = config.fromUnikname
+      transaction.recipientUnikname = config.toUnikname
 
       if (config.ledger) {
         delete transaction.signature
