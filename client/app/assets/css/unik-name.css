@@ -1,0 +1,168 @@
+.unik-name-details {
+  margin-left: 1rem;
+  border-radius: 20px;
+  color: #fff;
+  background-color: #2A2B82;
+}
+
+.unik-name-details md-card-title {
+  padding: 0px;
+}
+
+.unik-name-details md-card-title md-card-title-text {
+  font-size: 1.5em;
+  color: #fff;
+  font-weight: bold;
+  background-color: #201c60;
+  padding: 1rem 1rem 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+
+.unik-name-details md-card-title-text .profile_picture img {
+  border-radius: 50%;
+  height: 45px;
+  width: 45px;
+  margin-right: 1rem;
+
+}
+
+.unik-name-details md-card-title-text .profile_picture {
+  position: relative;
+}
+
+.unik-name-details md-card-title-text .profile_picture:after {
+  position: absolute;
+  bottom: 0px;
+  right: 8px;
+  content: "👤";
+  font-weight: bold;
+  font-size: 0.8em;
+  color: #fff;
+}
+
+.unik-name-details md-card-title-text .profile_picture.indiv:after {
+  content: "👤";
+}
+
+.unik-name-details md-card-title-text .profile_picture.team:after {
+  content: "👥";
+}
+
+.unik-name-details md-card-title-text .profile_picture.corp:after {
+  content: "🏢";
+}
+
+.unik-name-details md-card-title-text .profile_picture.gov:after {
+  content: "🌍";
+}
+
+.unik-name-details md-card-content {
+  padding: 0rem 1.5rem 0.5rem 1.5rem;
+}
+
+.unik-name-details md-card-content .coins {
+  margin-top: 0.5rem;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-flow: row wrap;
+  display: flex;
+}
+
+.unik-name-details md-card-content .coins .coin {
+  background-color: #fff;
+  color: #000;
+  margin: 0.5rem 0rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin-right: 1rem;
+}
+
+.unik-name-details md-card-content .security {
+  padding: 1rem;
+  display: flex;
+  justify-content: space-around;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: 1rem;
+  font-size: 1.2em;
+  font-weight: 600;
+  flex-direction: row;
+}
+
+.unik-name-details md-card-content .security .trust {
+  display: flex;
+}
+
+.unik-name-details md-card-content .security .trust .stars {
+    display: flex;
+    margin-left: 0.25rem;
+}
+
+.unik-name-details md-card-content .security .unik-check {
+  display: flex;
+}
+
+.unik-name-details md-card-content .security .unik-check .check {
+  border-radius: 50%;
+  margin-left: 0.25rem;
+  color: #fff;
+  font-size: 1.2em;
+position: relative;
+z-index: 1;
+}
+
+.unik-name-details md-card-content .security .unik-check .check:before {
+  content: "";
+  height: 1em;
+  width: 1em;
+  background-color: darkred;
+  position: absolute;
+  border-radius: 50%;
+  z-index: -1;
+}
+
+.unik-name-details md-card-content .security .unik-check .check.trusted:before {
+  background-color: green;
+}
+
+.unik-name-details md-card-content .coins .coin img {
+  margin-right: 0.5rem;
+}
+
+.unik-name-details md-card-content label {
+  font-weight: 600;
+}
+
+.unik-name-details md-card-content .link {
+  text-align: center;
+  margin-bottom: 0px;
+  font-size: 0.8em;
+}
+
+.unik-name-details md-card-content .link a,
+.unik-name-details md-card-content .link a:hover,
+.unik-name-details md-card-content .link a:active,
+.unik-name-details md-card-content .link a:focus {
+  color: #fff;
+  text-decoration: none;
+}
+
+.animate-show-hide.ng-hide {
+  opacity: 0;
+}
+
+.animate-show-hide.ng-hide-add,
+.animate-show-hide.ng-hide-remove {
+  transition: all linear 0.5s;
+}
+
+.unik-name-details {
+  opacity: 1;
+}

@@ -44,26 +44,66 @@
                 </md-tooltip>
               </md-icon>
 
-              <!-- <md-autocomplete flex="95"
-                               tabIndex="1"
-                               md-selected-item="data.selectedAddress"
-                               md-selected-item-change="selectedContactChange(contact)"
-                               md-search-text-change="searchTextChange(searchText)"
-                               md-search-text="searchText"
-                               md-items="contact in searchContactOrAccount(searchText)"
-                               md-item-text="contact.name ? ('@' + contact.name + ' - ' + contact.address) : contact.address"
-                               md-min-length="0"
-                               md-autofocus="true"
-                               ng-attr-md-floating-label="Type recipient's @unik-name here"
-                               ng-blur="onAddressFieldBlur()"> -->
-
-              <md-input-container class="md-block" flex="95">
-                <label>Type recipient's @unik-name here</label>
-                <input type="text" ng-required="true" tabIndex="1" ng-blur="resolveAddress()" ng-model="data.unikname">
-                <div ng-show="data.resolvedUnikname.resolvedAddress.address" style="color:gray;margin-top: 2.5em;">
-                  Resolved address : {{data.resolvedUnikname.resolvedAddress.address}}
+              <div flex layout="row">
+                <div flex>
+                  <md-input-container class="md-block">
+                    <label>Type recipient's @unik-name here</label>
+                    <input type="text" ng-required="true" tabIndex="1" ng-blur="resolveAddress()" ng-model="data.unikname">
+                    <div ng-show="data.resolvedUnikname.resolvedAddress.address" style="color:gray;margin-top: 2.5em;">
+                        Resolved address : {{data.resolvedUnikname.resolvedAddress.address}}
+                      </div>
+                    </md-input-container>
+                  </div>
+                <div flex>
+                    <md-card class="unik-name-details animate-show-hide" md-theme="dark-grey" md-theme-watch ng-show="data.resolvedUnikname.profile">
+                        <md-card-title>
+                          <md-card-title-text layout="row">
+                            <span class="profile_picture {{data.resolvedUnikname.type}}">
+                              <img ng-src="{{data.resolvedUnikname.profile.picture}}" />
+                            </span>
+                            <span>
+                              {{ data.resolvedUnikname.profile.unikname }}
+                            </span>
+                          </md-card-title-text>
+                        </md-card-title>
+                        <md-card-content layout="column">
+                          <div layout="row" class="security">
+                              <div class="trust">
+                                <span>Trust :</span>
+                                <span class="stars">
+                                  <span ng-repeat="n in range(1,data.resolvedUnikname.security.trust)">★</span>
+                                  <span ng-repeat="n in range(1, 5 - data.resolvedUnikname.security.trust)">☆</span>
+                                </span>
+                              </div>
+                            <div class="unik-check">
+                              Unik :
+                              <md-icon class="check trusted" ng-if="data.resolvedUnikname.security.unik" md-font-library="material-icons">done</md-icon>
+                              <md-icon class="check" ng-if="!data.resolvedUnikname.security.unik" md-font-library="material-icons">clear</md-icon>
+                            </div>
+                          </div>
+                          <div layout="column">
+                            <div>
+                              Coin supported by
+                              <span ng-if="data.resolvedUnikname.resolvedAddress.label"> #{{data.resolvedUnikname.resolvedAddress.label}}</span>:
+                            </div>
+                            <div class="coins">
+                              <span class="coin" ng-repeat="coin in data.resolvedUnikname.supportedCoins">
+                                  <img ng-src="{{coin.image}}">
+                                  <span>
+                                    {{ coin.label }}
+                                  </span>
+                              </span>
+                            </div>
+                          </div>
+                          <div class="link">
+                            <a href="https://unik-name.com">unik-name.com</a>
+                          </div>
+                        </md-card-content>
+                      </md-card>
                 </div>
-              </md-input-container>
+              </div>
+
+
 
             <md-item-template>
               <span class="item-title">

@@ -276,9 +276,7 @@
 
       $scope.resolveAddress = ()=>{
         let unikname = $scope.data.unikname;
-
         let resolvedUnikname = resolveUnikname(unikname);
-
         $scope.data.resolvedUnikname = resolvedUnikname;
       }
 
@@ -287,28 +285,51 @@
         return {
           profile:{
             unikname:'@fabien',
-            country:'France',
-            picture:'http://www.google.com',
-            creationDate:''
+            // country:'France',
+            picture:'http://kanibalfilms.fr/wp-content/uploads/2014/03/anonymous_avatar.gif',
+            // creationDate:'10/12/1985'
           },
           security:{
             trust:4,
             unik:true
           },
           type:'indiv',
-          supportedCoins:['BTC','ETH','ARK'],
+          supportedCoins:[
+            {
+              image: "https://s2.coinmarketcap.com/static/img/coins/16x16/1.png",
+              label: 'BTC'
+            },
+            {
+              image: "https://s2.coinmarketcap.com/static/img/coins/16x16/1027.png",
+              label: 'ETH'
+            },
+            {
+              image: "https://s2.coinmarketcap.com/static/img/coins/16x16/1586.png",
+              label: 'ARK'
+            }
+          ],
           resolvedAddress:{
-            label:'',
+            label:'#gift',
             address:'DBxtHVVGxGn43HQDMmF7fAd9JzQe4yJVvs'
           }
         }
       }
+
+      $scope.range = function(min, max, step) {
+        step = step || 1;
+        var input = [];
+        for (var i = min; i <= max; i += step) {
+            input.push(i);
+        }
+        return input;
+    };
 
       dialogService.open({
         scope: $scope,
         templateUrl: './src/components/account/templates/send-transaction-dialog.html'
       })
     }
+
 
     return {
       openDialogIn
