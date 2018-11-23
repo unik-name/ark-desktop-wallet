@@ -21,22 +21,24 @@
           <md-list-item>
             <b translate>From</b>
               <span class="md-secondary">
-                {{validate.transaction.senderUnikname}} - {{validate.transaction.senderId}}
+                <span class="unik-name">{{validate.transaction.senderUnikname}}</span> - <span class="unik-address">{{validate.transaction.senderId}}</span>
               </span>
           </md-list-item>
           <md-list-item ng-if="validate.transaction.type==0">
             <b translate>To</b>
             <span class="md-secondary">
               <span style="vertical-align: middle;">
-              {{ validate.transaction.recipientUnikname}} - {{validate.transaction.recipientId}}
+              <span class="unik-name">{{ validate.transaction.recipientUnikname.profile.unikname}}<span ng-if="validate.transaction.recipientUnikname.resolvedAddress.label">#{{validate.transaction.recipientUnikname.resolvedAddress.label}}</span></span>
+                 - <span class="unik-address">{{validate.transaction.recipientId}}</span>
               </span>
-              <md-icon md-font-library="material-icons" ng-if="validate.resolvedAccount && validate.resolvedAccount.name">
-                {{validate.resolvedAccount.icon}}
-                <md-tooltip>
-                    <b>{{validate.resolvedAccount.type | translate}}</b>: {{validate.resolvedAccount.name}}
-                </md-tooltip>
+              <md-icon md-font-library="material-icons" class="recipient-icon" ng-click="toggleRecipientUnikard()">
+                account_circle
               </md-icon>
-              </span>
+              <div class="validate-unikard animate-show-hide" ng-show="showRecipientUnikard">
+                  <unikard unikname="validate.transaction.recipientUnikname"></unikard>
+              </div>
+              <div class="validate-unikard-closer" ng-show="showRecipientUnikard" ng-click="toggleRecipientUnikard()"></div>
+            </span>
           </md-list-item>
           <md-list-item ng-if="validate.transaction.username">
             <b translate>Username</b><span class="md-secondary">{{validate.transaction.username}}</span>

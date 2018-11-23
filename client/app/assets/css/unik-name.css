@@ -163,6 +163,37 @@ z-index: 1;
   transition: all linear 0.5s;
 }
 
+.animate-show-hide.slow-animation.ng-hide-add,
+.animate-show-hide.slow-animation.ng-hide-remove {
+  transition-duration: 1s;
+}
+
+
 .unik-name-details {
   opacity: 1;
+}
+
+.validate-unikard {
+  position: fixed;
+  right:10%;
+  bottom: 15%;
+  z-index: 1000000000;
+}
+
+.validate-unikard-closer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 999999999;
+}
+
+.unik-name {
+  color: #C4C4C4;
+}
+
+.unik-address {
+  font-weight: 600;
+  font-style: italic;
 }

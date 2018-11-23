@@ -92,7 +92,7 @@
 
         if (tab === 'single') {
           data.toAddress = $scope.data.resolvedUnikname.resolvedAddress.address.trim()
-          data.toUnikname = $scope.data.unikname.trim()
+          data.toUnikname = $scope.data.resolvedUnikname;
           data.amount = Number(utilityService.arkToArktoshi(parseFloat($scope.data.amount), 0))
           data.smartbridge = $scope.data.smartbridge
 
@@ -284,17 +284,19 @@
         // TODO Call unikname web-service
         return {
           profile:{
-            unikname:'@fabien',
-            // country:'France',
+            unikname:'@laurent.lourenço',
             picture:'http://kanibalfilms.fr/wp-content/uploads/2014/03/anonymous_avatar.gif',
-            // creationDate:'10/12/1985'
           },
           security:{
-            trust:4,
+            trust:5,
             unik:true
           },
           type:'indiv',
           supportedCoins:[
+            {
+              image: "https://s2.coinmarketcap.com/static/img/coins/16x16/1586.png",
+              label: 'ARK'
+            },
             {
               image: "https://s2.coinmarketcap.com/static/img/coins/16x16/1.png",
               label: 'BTC'
@@ -302,27 +304,14 @@
             {
               image: "https://s2.coinmarketcap.com/static/img/coins/16x16/1027.png",
               label: 'ETH'
-            },
-            {
-              image: "https://s2.coinmarketcap.com/static/img/coins/16x16/1586.png",
-              label: 'ARK'
             }
           ],
           resolvedAddress:{
-            label:'#gift',
+            label:'perso',
             address:'DBxtHVVGxGn43HQDMmF7fAd9JzQe4yJVvs'
           }
         }
       }
-
-      $scope.range = function(min, max, step) {
-        step = step || 1;
-        var input = [];
-        for (var i = min; i <= max; i += step) {
-            input.push(i);
-        }
-        return input;
-    };
 
       dialogService.open({
         scope: $scope,

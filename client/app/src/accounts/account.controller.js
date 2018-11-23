@@ -1966,6 +1966,12 @@
         $scope.validate.resolvedAccount = contacts[0];
       }
 
+      $scope.toggleRecipientUnikard = function() {
+        $scope.showRecipientUnikard = !$scope.showRecipientUnikard;
+      }
+
+      $scope.showRecipientUnikard = false;
+
       dialogService.open({
         scope: $scope,
         templateUrl: "./src/accounts/view/validateTransactionDialog.html"
