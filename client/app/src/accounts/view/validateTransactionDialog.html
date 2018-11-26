@@ -28,7 +28,7 @@
             <b translate>To</b>
             <span class="md-secondary">
               <span style="vertical-align: middle;">
-              <span class="unik-name">{{ validate.transaction.recipientUnikname.resolver.unikname}}<span ng-if="validate.transaction.recipientUnikname.resolver.label">#{{validate.transaction.recipientUnikname.resolver.label}}</span></span>
+              <span class="unik-name">@{{ validate.transaction.recipientUnikname.resolver.unikname}}<span ng-if="validate.transaction.recipientUnikname.resolver.label && validate.transaction.recipientUnikname.resolver.label !== 'default'">#{{validate.transaction.recipientUnikname.resolver.label}}</span></span>
                  - <span class="unik-address">{{validate.transaction.recipientId}}</span>
               </span>
               <md-icon md-font-library="material-icons" class="recipient-icon" ng-click="toggleRecipientUnikard()">

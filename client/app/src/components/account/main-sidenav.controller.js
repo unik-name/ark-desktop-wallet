@@ -14,13 +14,20 @@
         accountCtrl: '=',
         addressBookCtrl: '='
       },
-      controller: MainSidenavController
+      controller: ['$scope', 'storageService', MainSidenavController]
     })
 
-  function MainSidenavController ($scope) {
+
+  function MainSidenavController ($scope, storageService) {
     this.$onInit = () => {
-      this.ul = this.accountCtrl
-      this.ab = this.addressBookCtrl
+      this.ul = this.accountCtrl;
+      this.ab = this.addressBookCtrl;
+      this.myUnikname = `@${storageService.get('from-unik-name')}`;
     }
+
+    this.updateUnikName = () => {
+      storageService.set('from-unik-name', this.myUnikname.replace('@', ''));
+    }
+
   }
 })()

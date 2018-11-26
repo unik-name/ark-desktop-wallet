@@ -274,18 +274,59 @@
         return contacts
       }
 
-      $scope.resolveAddress = async ()=>{
+      $scope.resolveAddress = async () => {
         let unikname = $scope.data.unikname;
-        try{
+        try {
           let resolvedUnikname = await resolveUnikname(unikname);
+          console.log('try',resolvedUnikname.data);
           $scope.data.resolvedUnikname = resolvedUnikname.data;
-        }catch(e){console.error(e)}
+        } catch(e) {
+          if (e.status) {
+            switch(e.status) {
+              case 401:
+              $scope.data.resolvedUnikname = {error: "Need to be whitelisted"};
+                break;
+              case 403:
+              $scope.data.resolvedUnikname = {error: "Need unik-name authentication"};
+                break;
+              case 404:
+                $scope.data.resolvedUnikname = {error: 'Not found'};
+                break;
+              default:
+                console.error(e)
+                throw(e);
+            }
+          } else {
+            console.error(e);
+            $scope.data.resolvedUnikname = undefined
+          }
+        }
       }
 
       function resolveUnikname(unikname){
+
+        let headers = {
+          Pragma: undefined,
+          'Cache-Control': undefined,
+          'X-Requested-With': undefined,
+          'If-Modified-Since': undefined,
+          'x-pm-appversion': undefined,
+          'x-pm-uid': undefined,
+          'x-pm-apiversion': undefined
+        };
+
+        let unikNameFrom = storageService.get('from-unik-name');
+        console.log("FROM Storage : ", unikNameFrom);
+
+        if (unikNameFrom) {
+            headers['Authorization'] = `Basic ${unikNameFrom}`;
+        }
+
+        let uniknameAndLabel = unikname.replace('@', '').split('#');
         return $http({
           method:'GET',
-          url: `http://localhost:3000/uniknames/${unikname}/labels/gift/types/ARK`
+          url: `http://localhost:3000/uniknames/${uniknameAndLabel[0]}/labels/${uniknameAndLabel[1] ? uniknameAndLabel[1] : 'default'}/types/ARK`,
+          headers: headers
         });
       }
 
