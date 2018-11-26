@@ -49,8 +49,8 @@
                   <md-input-container class="md-block">
                     <label>Type recipient's @unik-name here</label>
                     <input type="text" ng-required="true" tabIndex="1" ng-blur="resolveAddress()" ng-model="data.unikname">
-                    <div ng-show="data.resolvedUnikname.resolvedAddress.address" style="color:gray;margin-top: 2.5em;">
-                        Resolved address : {{data.resolvedUnikname.resolvedAddress.address}}
+                    <div ng-show="data.resolvedUnikname.resolver.address" style="color:gray;margin-top: 2.5em;">
+                        Resolved address : {{data.resolvedUnikname.resolver.address}}
                       </div>
                     </md-input-container>
                   </div>
@@ -157,7 +157,7 @@
 
     <md-button type="submit"
                ng-click="submit(tab)"
-               ng-disabled="((tab === 'single' && (singleForm.$invalid || receiverValidation.failType === 'error' || !data.resolvedUnikname.resolvedAddress.address)) || (tab === 'multiple' && multipleForm.$invalid === true))"
+               ng-disabled="((tab === 'single' && (singleForm.$invalid || receiverValidation.failType === 'error' || !data.resolvedUnikname.resolver.address)) || (tab === 'multiple' && multipleForm.$invalid === true))"
                tabIndex="6">
       <translate ng-if="!data.ledger">Next</translate>
       <translate ng-if="data.ledger">Sign with Ledger</translate>

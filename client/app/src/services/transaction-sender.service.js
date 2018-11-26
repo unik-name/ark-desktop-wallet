@@ -2,7 +2,7 @@
   'use strict'
 
   angular.module('arkclient.services')
-    .service('transactionSenderService', ['$timeout', 'gettextCatalog', 'gettext', 'dialogService', 'utilityService', 'accountService', 'storageService', 'toastService', 'neoApiService', 'transactionBuilderService', 'transactionValidatorService', TransactionSenderService])
+    .service('transactionSenderService', ['$timeout', 'gettextCatalog', 'gettext', 'dialogService', 'utilityService', 'accountService', 'storageService', 'toastService', 'neoApiService', 'transactionBuilderService', 'transactionValidatorService', '$http', TransactionSenderService])
 
   /**
    * TransactionSenderService
@@ -13,7 +13,7 @@
    *
    * TODO check the passphrase before moving to the next step
    */
-  function TransactionSenderService ($timeout, gettextCatalog, gettext, dialogService, utilityService, accountService, storageService, toastService, neoApiService, transactionBuilderService, transactionValidator) {
+  function TransactionSenderService ($timeout, gettextCatalog, gettext, dialogService, utilityService, accountService, storageService, toastService, neoApiService, transactionBuilderService, transactionValidator, $http) {
     /**
      * Show the send transaction dialog. Reuses the controller and its $scope
      * TODO because currently it depends on the original implementation of AccountController too
@@ -91,7 +91,7 @@
         dialogService.hide()
 
         if (tab === 'single') {
-          data.toAddress = $scope.data.resolvedUnikname.resolvedAddress.address.trim()
+          data.toAddress = $scope.data.resolvedUnikname.resolver.address.trim()
           data.toUnikname = $scope.data.resolvedUnikname;
           data.amount = Number(utilityService.arkToArktoshi(parseFloat($scope.data.amount), 0))
           data.smartbridge = $scope.data.smartbridge
@@ -274,43 +274,19 @@
         return contacts
       }
 
-      $scope.resolveAddress = ()=>{
+      $scope.resolveAddress = async ()=>{
         let unikname = $scope.data.unikname;
-        let resolvedUnikname = resolveUnikname(unikname);
-        $scope.data.resolvedUnikname = resolvedUnikname;
+        try{
+          let resolvedUnikname = await resolveUnikname(unikname);
+          $scope.data.resolvedUnikname = resolvedUnikname.data;
+        }catch(e){console.error(e)}
       }
 
       function resolveUnikname(unikname){
-        // TODO Call unikname web-service
-        return {
-          profile:{
-            unikname:'@laurent.lourenço',
-            picture:'http://kanibalfilms.fr/wp-content/uploads/2014/03/anonymous_avatar.gif',
-          },
-          security:{
-            trust:5,
-            unik:true
-          },
-          type:'indiv',
-          supportedCoins:[
-            {
-              image: "https://s2.coinmarketcap.com/static/img/coins/16x16/1586.png",
-              label: 'ARK'
-            },
-            {
-              image: "https://s2.coinmarketcap.com/static/img/coins/16x16/1.png",
-              label: 'BTC'
-            },
-            {
-              image: "https://s2.coinmarketcap.com/static/img/coins/16x16/1027.png",
-              label: 'ETH'
-            }
-          ],
-          resolvedAddress:{
-            label:'perso',
-            address:'DBxtHVVGxGn43HQDMmF7fAd9JzQe4yJVvs'
-          }
-        }
+        return $http({
+          method:'GET',
+          url: `http://localhost:3000/uniknames/${unikname}/labels/gift/types/ARK`
+        });
       }
 
       dialogService.open({

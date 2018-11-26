@@ -5,7 +5,7 @@
           <img ng-src="{{unikname.profile.picture}}" />
         </span>
         <span>
-          {{ unikname.profile.unikname }}
+          @{{ unikname.resolver.unikname }}
         </span>
       </md-card-title-text>
     </md-card-title>
@@ -27,10 +27,10 @@
       <div layout="column">
         <div>
           Coin supported by
-          <span ng-if="unikname.resolvedAddress.label"> #{{unikname.resolvedAddress.label}}</span>:
+          <span ng-if="unikname.resolver.label"> #{{unikname.resolver.label}}</span>:
         </div>
         <div class="coins">
-          <span class="coin" ng-repeat="coin in unikname.supportedCoins">
+          <span class="coin" ng-repeat="coin in unikname.supportedTypes">
               <img ng-src="{{coin.image}}">
               <span>
                 {{ coin.label }}
