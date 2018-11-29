@@ -21,7 +21,8 @@
           <md-list-item>
             <b translate>From</b>
               <span class="md-secondary">
-                <span class="unik-name">{{validate.transaction.senderUnikname}}</span> - <span class="unik-address">{{validate.transaction.senderId}}</span>
+                <span ng-if="validate.transaction.senderUnikname"><span class="unik-name">{{validate.transaction.senderUnikname}}</span> - </span>
+                <span ng-class="{'unik-address': validate.transaction.senderUnikname.resolver.unikname}">{{validate.transaction.senderId}}</span>
               </span>
           </md-list-item>
           <md-list-item ng-if="validate.transaction.type==0">
@@ -29,7 +30,7 @@
             <span class="md-secondary">
               <span style="vertical-align: middle;">
               <span class="unik-name">@{{ validate.transaction.recipientUnikname.resolver.unikname}}<span ng-if="validate.transaction.recipientUnikname.resolver.label && validate.transaction.recipientUnikname.resolver.label !== 'default'">#{{validate.transaction.recipientUnikname.resolver.label}}</span></span>
-                 - <span class="unik-address">{{validate.transaction.recipientId}}</span>
+                 - <span ng-class="{'unik-address': validate.transaction.recipientUnikname.resolver.unikname}">{{validate.transaction.recipientId}}</span>
               </span>
               <md-icon md-font-library="material-icons" class="recipient-icon" ng-click="toggleRecipientUnikard()">
                 account_circle

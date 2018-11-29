@@ -81,7 +81,7 @@
           publicKey: selectedAccount.publicKey,
           masterpassphrase: $scope.data.passphrase.trim(),
           fromAddress: $scope.data.fromAddress,
-          fromUnikname: '@bob'
+          fromUnikname: $scope.data.fromUnikName
         }
 
         if ($scope.data.secondPassphrase) {
@@ -313,10 +313,11 @@
         };
 
         let unikNameFrom = storageService.get('from-unik-name');
-        console.log("FROM Storage : ", unikNameFrom);
 
         if (unikNameFrom) {
-            headers['Authorization'] = `Basic ${unikNameFrom}`;
+          headers['Authorization'] = `Basic ${unikNameFrom}`;
+        } else {
+          $scope.data.fromUnikName = undefined;
         }
 
         let uniknameAndLabel = unikname.replace('@', '').split('#');

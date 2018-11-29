@@ -22,7 +22,8 @@
     this.$onInit = () => {
       this.ul = this.accountCtrl;
       this.ab = this.addressBookCtrl;
-      this.myUnikname = `@${storageService.get('from-unik-name')}`;
+      let unikNameFromStorage = storageService.get('from-unik-name');
+      this.myUnikname = unikNameFromStorage ? `@${unikNameFromStorage}` : '';
     }
 
     this.updateUnikName = () => {
