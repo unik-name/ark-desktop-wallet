@@ -284,16 +284,13 @@
           if (e.status) {
             switch(e.status) {
               case 401:
-              $scope.data.resolvedUnikname = {error: "Need to be whitelisted"};
-                break;
               case 403:
-              $scope.data.resolvedUnikname = {error: "Need unik-name authentication"};
-                break;
               case 404:
-                $scope.data.resolvedUnikname = {error: 'Not found'};
+                $scope.data.resolvedUnikname = {error: e.data};
                 break;
               default:
                 console.error(e)
+                $scope.data.resolvedUnikname = undefined;
                 throw(e);
             }
           } else {
