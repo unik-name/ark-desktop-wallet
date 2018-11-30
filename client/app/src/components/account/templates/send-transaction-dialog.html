@@ -49,7 +49,7 @@
                   <md-input-container class="md-block">
                     <label>Type recipient's @unik-name here</label>
                     <input type="text" ng-required="true" tabIndex="1" ng-blur="resolveAddress()" ng-model="data.unikname">
-                    <div ng-show="data.resolvedUnikname.resolver.address" style="color:gray;margin-top: 2.5em;">
+                    <div ng-show="data.resolvedUnikname.profile && data.resolvedUnikname.resolver.address" style="color:gray;margin-top: 2.5em;">
                         Resolved address : {{data.resolvedUnikname.resolver.address}}
                       </div>
                     </md-input-container>

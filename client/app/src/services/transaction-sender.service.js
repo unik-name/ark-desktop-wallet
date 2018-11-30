@@ -277,9 +277,26 @@
       $scope.resolveAddress = async () => {
         let unikname = $scope.data.unikname;
         try {
-          let resolvedUnikname = await resolveUnikname(unikname);
-          console.log('try',resolvedUnikname.data);
-          $scope.data.resolvedUnikname = resolvedUnikname.data;
+          if (unikname.indexOf('@') === 0) {
+
+            let resolvedUnikname = await resolveUnikname(unikname);
+            $scope.data.resolvedUnikname = resolvedUnikname.data;
+          } else {
+            $scope.data.resolvedUnikname = {
+              resolver: {
+                address: unikname
+              }
+            }
+            let accountName = accountCtrl.accounts.filter(elm => {
+              return elm.address === $scope.data.fromAddress;
+            })[0].username;
+
+            if (accountName && accountName.indexOf('@') === 0) {
+              $scope.data.fromUnikName = accountName.split("#")[0];
+            } else {
+              $scope.data.fromUnikName = undefined;
+            }
+          }
         } catch(e) {
           if (e.status) {
             switch(e.status) {

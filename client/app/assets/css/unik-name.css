@@ -190,10 +190,10 @@ z-index: 1;
 }
 
 .unik-name {
-  color: #C4C4C4;
+  font-weight: 600;
+  font-style: italic;
 }
 
 .unik-address {
-  font-weight: 600;
-  font-style: italic;
+  color: #C4C4C4;
 }
