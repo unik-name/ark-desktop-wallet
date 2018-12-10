@@ -31,6 +31,7 @@
     <WalletIdenticon
       v-if="type === 0"
       :value="recipientAddress"
+      :recipient-unikname="recipientUnikname"
       :size="75"
     />
     <div
@@ -76,6 +77,11 @@ export default {
       type: Number,
       required: false,
       default: 0
+    },
+    recipientUnikname: {
+      type: Object,
+      required: false,
+      default: undefined
     }
   },
 

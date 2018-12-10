@@ -1,3 +1,7 @@
+# @Unik-Name
+Here is a possible integration of @unik-name in Ark Desktop Wallet v2.
+[unik-name](https://unik-name.com)
+
 # Ark Desktop Wallet
 
 ![Ark Desktop Wallet](./banner.png)

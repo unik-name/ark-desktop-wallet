@@ -31,6 +31,7 @@
           type="text"
           class="InputAddress__input flex flex-grow bg-transparent text-theme-page-text"
           @blur="onBlur"
+          @change="onChange"
           @focus="onFocus"
           @click.self.stop
           @keyup.up="onKeyUp"
@@ -248,6 +249,10 @@ export default {
 
     focus () {
       this.$refs.input.focus()
+    },
+
+    onChange () {
+      this.$emit('change')
     },
 
     onBlur (evt) {

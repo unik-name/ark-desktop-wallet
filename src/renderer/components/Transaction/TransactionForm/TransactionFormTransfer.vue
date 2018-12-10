@@ -1,5 +1,21 @@
 <template>
-  <form
+  <div>
+    <InputText
+      ref="recipientUnikName"
+      v-model="recipientUnikName"
+      :helper-text="unikname && unikname.error"
+      :label="$t('TRANSACTION.RECIPIENT_UNIKNAME')"
+      :is-invalid="unikname && unikname.error !== undefined"
+      name="recipientUnikName"
+      class="mb-5"
+      @blur="resolveUnikName"
+    />
+    <Unikard
+      :unikname="unikname"
+      class="Unikard"
+    />
+
+<form
     class="flex flex-col"
     @submit.prevent
   >
@@ -107,15 +123,25 @@
       :visible="showLedgerLoader"
     />
   </form>
+</div>
 </template>
 
 <script>
 import { maxLength, required } from 'vuelidate/lib/validators'
 import { TRANSACTION_TYPES } from '@config'
-import { InputAddress, InputCurrency, InputPassword, InputSwitch, InputText, InputFee } from '@/components/Input'
+import {
+  InputAddress,
+  InputCurrency,
+  InputPassword,
+  InputSwitch,
+  InputText,
+  InputFee
+} from '@/components/Input'
 import { ModalLoader } from '@/components/Modal'
 import { PassphraseInput } from '@/components/Passphrase'
 import TransactionService from '@/services/transaction'
+import { Unikard } from '@/components/UnikName'
+import UnikNameService from '@/services/unikname'
 
 export default {
   name: 'TransactionFormTransfer',
@@ -130,7 +156,8 @@ export default {
     InputText,
     InputFee,
     ModalLoader,
-    PassphraseInput
+    PassphraseInput,
+    Unikard
   },
 
   props: {
@@ -153,7 +180,9 @@ export default {
     isSendAllActive: false,
     showEncryptLoader: false,
     showLedgerLoader: false,
-    bip38Worker: null
+    bip38Worker: null,
+    recipientUnikName: '',
+    unikname: undefined
   }),
 
   computed: {
@@ -164,21 +193,32 @@ export default {
     amountTooLowError () {
       const { fractionDigits, token } = this.session_network
       const minimumAmount = Math.pow(10, -fractionDigits)
-      const amount = this.currency_format(minimumAmount, { currency: token, currencyDisplay: 'code', subunit: true })
+      const amount = this.currency_format(minimumAmount, {
+        currency: token,
+        currencyDisplay: 'code',
+        subunit: true
+      })
       return this.$t('INPUT_CURRENCY.ERROR.LESS_THAN_MINIMUM', { amount })
     },
     notEnoughBalanceError () {
-      const balance = this.formatter_networkCurrency(this.currentWallet.balance)
+      const balance = this.formatter_networkCurrency(
+        this.currentWallet.balance
+      )
       return this.$t('TRANSACTION_FORM.ERROR.NOT_ENOUGH_BALANCE', { balance })
     },
     maximumAvailableAmount () {
-      return parseFloat(this.currency_subToUnit(this.currentWallet.balance) - this.form.fee)
+      return parseFloat(
+        this.currency_subToUnit(this.currentWallet.balance) - this.form.fee
+      )
     },
     currentWallet () {
       return this.wallet_fromRoute
     },
     vendorFieldLabel () {
-      return `${this.$t('TRANSACTION.VENDOR_FIELD')} - ${this.$t('VALIDATION.MAX_LENGTH', [64])}`
+      return `${this.$t('TRANSACTION.VENDOR_FIELD')} - ${this.$t(
+        'VALIDATION.MAX_LENGTH',
+        [64]
+      )}`
     },
     vendorFieldError () {
       if (this.vendorFieldIsInvalid) {
@@ -188,7 +228,9 @@ export default {
       return null
     },
     vendorFieldIsInvalid () {
-      return this.$v.form.vendorField.$dirty && this.$v.form.vendorField.$invalid
+      return (
+        this.$v.form.vendorField.$dirty && this.$v.form.vendorField.$invalid
+      )
     }
   },
 
@@ -284,23 +326,50 @@ export default {
       let success = true
       let transaction
       if (!this.currentWallet.isLedger) {
-        transaction = await this.$client.buildTransfer(transactionData, this.$refs.fee && this.$refs.fee.isAdvancedFee)
+        transaction = await this.$client.buildTransfer(
+          transactionData,
+          this.$refs.fee && this.$refs.fee.isAdvancedFee
+        )
       } else {
         success = false
         this.showLedgerLoader = true
         try {
-          const transactionObject = await this.$client.buildTransfer(transactionData, this.$refs.fee && this.$refs.fee.isAdvancedFee, true)
-          transaction = await TransactionService.ledgerSign(this.currentWallet, transactionObject, this)
+          const transactionObject = await this.$client.buildTransfer(
+            transactionData,
+            this.$refs.fee && this.$refs.fee.isAdvancedFee,
+            true
+          )
+          transaction = await TransactionService.ledgerSign(
+            this.currentWallet,
+            transactionObject,
+            this
+          )
           success = true
         } catch (error) {
-          this.$error(`${this.$t('TRANSACTION.LEDGER_SIGN_FAILED')}: ${error.message}`)
+          this.$error(
+            `${this.$t('TRANSACTION.LEDGER_SIGN_FAILED')}: ${error.message}`
+          )
         }
         this.showLedgerLoader = false
       }
 
       if (success) {
+        // TODO: Update Transaction builder from arkecosystem
+        transaction.recipientUnikName = this.unikname
         this.emitNext(transaction)
       }
+    },
+
+    async resolveUnikName () {
+      this.unikname = await UnikNameService.resolveUnikName(this.recipientUnikName)
+      if (this.unikname && this.unikname.resolver && this.unikname.resolver.address) {
+        this.form.recipientId = this.unikname.resolver.address
+      }
+    },
+
+    resetUnikName () {
+      this.recipientUnikName = undefined
+      this.unikname = undefined
     }
   },
 
@@ -310,7 +379,7 @@ export default {
         required,
         isValid (value) {
           if (this.$refs.recipient) {
-            return !this.$refs.recipient.$v.$invalid
+            return !this.$refs.recipient.$v.$invalid || value.indexOf('@') === 0
           }
           return false
         }
@@ -382,3 +451,28 @@ export default {
   }
 }
 </script>
+
+<style lang="postcss" scoped>
+.InputAddress {
+  flex:1;
+  justify-content: flex-start;
+}
+
+.InputAddress__MenuDropdown {
+  flex: initial !important;
+}
+
+.InputAddress__resolvedAddress {
+  color: gray;
+  font-size: 80%;
+}
+
+.InputAddress__resolvedAddress {
+
+}
+.Unikard {
+  flex: 1;
+  width: 100%;
+}
+
+</style>

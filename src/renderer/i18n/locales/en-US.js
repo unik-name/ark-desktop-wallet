@@ -695,6 +695,8 @@ export default {
     RECIPIENT: 'Recipient',
     RESEND: 'Resend',
     RESENT_NOTICE: 'Transaction {transactionId} has been resent',
+    RECIPIENT_UNIKNAME: 'Recipient @unik-name',
+    UNIKNAME_TOOLTIP: 'Show @{unikname}\'s unikard',
     SAVE_OFFLINE: 'Save transaction offline',
     SECOND_PASSPHRASE: 'Second Passphrase',
     SEND: 'Send',

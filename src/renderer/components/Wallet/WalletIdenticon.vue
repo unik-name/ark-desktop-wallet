@@ -48,7 +48,10 @@
           height="100%"
           :mask="`url(#${maskId})`"
         />
-        <g :mask="`url(#${maskId})`">
+
+        <g
+          :mask="`url(#${maskId})`"
+        >
           <rect
             v-for="rectangle in rectangles"
             :key="rectangle.id"
@@ -59,7 +62,16 @@
             x="0"
             y="0"
           />
+          <image
+            v-if="recipientUnikname && recipientUnikname.profile.picture"
+            :href="recipientUnikname.profile.picture"
+            x="0"
+            y="0"
+            width="100%"
+            height="100%"
+          />
           <path
+            v-else
             :key="logo.id"
             :width="logo.width"
             :height="logo.height"
@@ -101,6 +113,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    recipientUnikname: {
+      type: Object,
+      required: false,
+      default: undefined
     }
   },
 

@@ -3,6 +3,7 @@
     <TransactionDetail
       :amount="formatter_networkCurrency(totalAmount)"
       :recipient-address="transaction.recipientId"
+      :recipient-unikname="transaction.recipientUnikName"
       :sender-address="address"
       :type="transaction.type"
       class="mb-3"

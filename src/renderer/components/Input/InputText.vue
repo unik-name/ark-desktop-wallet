@@ -157,6 +157,7 @@ export default {
 
     onBlur () {
       this.isFocused = false
+      this.$emit('blur')
     },
 
     focus () {
