@@ -3,7 +3,7 @@
     <InputText
       ref="recipientUnikName"
       v-model="recipientUnikName"
-      :helper-text="unikname && unikname.error"
+      :helper-text="unikname && unikname.error && `${unikname.error}${unikname.status ? ' - ' + this.$t(`TRANSACTION.UNIKNAME_${unikname.status}`) || '' : ''}`"
       :label="$t('TRANSACTION.RECIPIENT_UNIKNAME')"
       :is-invalid="unikname && unikname.error !== undefined"
       name="recipientUnikName"
@@ -15,115 +15,115 @@
       class="Unikard"
     />
 
-<form
-    class="flex flex-col"
-    @submit.prevent
-  >
-    <InputAddress
-      ref="recipient"
-      v-model="$v.form.recipientId.$model"
-      :label="$t('TRANSACTION.RECIPIENT')"
-      :pub-key-hash="session_network.version"
-      :show-suggestions="true"
-      name="recipientId"
-      class="mb-5"
-    />
-
-    <div class="flex items-baseline mb-5">
-      <InputCurrency
-        ref="amount"
-        v-model="$v.form.amount.$model"
-        :alternative-currency="alternativeCurrency"
-        :currency="session_network.token"
-        :is-invalid="$v.form.amount.$dirty && $v.form.amount.$invalid"
-        :label="$t('TRANSACTION.AMOUNT')"
-        :minimum-error="amountTooLowError"
-        :maximum-amount="maximumAvailableAmount"
-        :maximum-error="notEnoughBalanceError"
-        :required="true"
-        class="flex-1 mr-3"
-        @blur="ensureAvailableAmount"
-      />
-
-      <InputSwitch
-        :text="$t('TRANSACTION.SEND_ALL')"
-        :is-active="isSendAllActive"
-        :is-disabled="!canSendAll()"
-        @change="onSendAll"
-      />
-    </div>
-
-    <InputText
-      ref="vendorField"
-      v-model="$v.form.vendorField.$model"
-      :helper-text="vendorFieldError"
-      :is-invalid="vendorFieldIsInvalid"
-      :label="vendorFieldLabel"
-      :bip39-warning="true"
-      name="vendorField"
-      class="mb-5"
-    />
-
-    <InputFee
-      v-if="session_network.apiVersion === 2"
-      ref="fee"
-      :currency="session_network.token"
-      :transaction-type="$options.transactionType"
-      @input="onFee"
-    />
-
-    <div
-      v-if="currentWallet.isLedger"
-      class="mt-10"
+    <form
+      class="flex flex-col"
+      @submit.prevent
     >
-      {{ $t('TRANSACTION.LEDGER_SIGN_NOTICE') }}
-    </div>
-    <InputPassword
-      v-else-if="currentWallet.passphrase"
-      ref="password"
-      v-model="$v.form.walletPassword.$model"
-      class="mt-4"
-      :label="$t('TRANSACTION.PASSWORD')"
-      :is-required="true"
-    />
-    <PassphraseInput
-      v-else
-      ref="passphrase"
-      v-model="$v.form.passphrase.$model"
-      class="mt-4"
-      :address="currentWallet.address"
-      :pub-key-hash="session_network.version"
-    />
+      <InputAddress
+        ref="recipient"
+        v-model="$v.form.recipientId.$model"
+        :label="$t('TRANSACTION.RECIPIENT')"
+        :pub-key-hash="session_network.version"
+        :show-suggestions="true"
+        name="recipientId"
+        class="mb-5"
+      />
 
-    <PassphraseInput
-      v-if="currentWallet.secondPublicKey"
-      ref="secondPassphrase"
-      v-model="$v.form.secondPassphrase.$model"
-      :label="$t('TRANSACTION.SECOND_PASSPHRASE')"
-      :pub-key-hash="session_network.version"
-      class="mt-5"
-    />
+      <div class="flex items-baseline mb-5">
+        <InputCurrency
+          ref="amount"
+          v-model="$v.form.amount.$model"
+          :alternative-currency="alternativeCurrency"
+          :currency="session_network.token"
+          :is-invalid="$v.form.amount.$dirty && $v.form.amount.$invalid"
+          :label="$t('TRANSACTION.AMOUNT')"
+          :minimum-error="amountTooLowError"
+          :maximum-amount="maximumAvailableAmount"
+          :maximum-error="notEnoughBalanceError"
+          :required="true"
+          class="flex-1 mr-3"
+          @blur="ensureAvailableAmount"
+        />
 
-    <div class="self-start">
-      <button
-        :disabled="$v.form.$invalid"
-        class="blue-button mt-10"
-        @click="onSubmit"
+        <InputSwitch
+          :text="$t('TRANSACTION.SEND_ALL')"
+          :is-active="isSendAllActive"
+          :is-disabled="!canSendAll()"
+          @change="onSendAll"
+        />
+      </div>
+
+      <InputText
+        ref="vendorField"
+        v-model="$v.form.vendorField.$model"
+        :helper-text="vendorFieldError"
+        :is-invalid="vendorFieldIsInvalid"
+        :label="vendorFieldLabel"
+        :bip39-warning="true"
+        name="vendorField"
+        class="mb-5"
+      />
+
+      <InputFee
+        v-if="session_network.apiVersion === 2"
+        ref="fee"
+        :currency="session_network.token"
+        :transaction-type="$options.transactionType"
+        @input="onFee"
+      />
+
+      <div
+        v-if="currentWallet.isLedger"
+        class="mt-10"
       >
-        {{ $t('COMMON.NEXT') }}
-      </button>
-    </div>
+        {{ $t('TRANSACTION.LEDGER_SIGN_NOTICE') }}
+      </div>
+      <InputPassword
+        v-else-if="currentWallet.passphrase"
+        ref="password"
+        v-model="$v.form.walletPassword.$model"
+        class="mt-4"
+        :label="$t('TRANSACTION.PASSWORD')"
+        :is-required="true"
+      />
+      <PassphraseInput
+        v-else
+        ref="passphrase"
+        v-model="$v.form.passphrase.$model"
+        class="mt-4"
+        :address="currentWallet.address"
+        :pub-key-hash="session_network.version"
+      />
 
-    <ModalLoader
-      :message="$t('ENCRYPTION.DECRYPTING')"
-      :visible="showEncryptLoader"
-    />
-    <ModalLoader
-      :message="$t('TRANSACTION.LEDGER_SIGN_WAIT')"
-      :visible="showLedgerLoader"
-    />
-  </form>
-</div>
+      <PassphraseInput
+        v-if="currentWallet.secondPublicKey"
+        ref="secondPassphrase"
+        v-model="$v.form.secondPassphrase.$model"
+        :label="$t('TRANSACTION.SECOND_PASSPHRASE')"
+        :pub-key-hash="session_network.version"
+        class="mt-5"
+      />
+
+      <div class="self-start">
+        <button
+          :disabled="$v.form.$invalid"
+          class="blue-button mt-10"
+          @click="onSubmit"
+        >
+          {{ $t('COMMON.NEXT') }}
+        </button>
+      </div>
+
+      <ModalLoader
+        :message="$t('ENCRYPTION.DECRYPTING')"
+        :visible="showEncryptLoader"
+      />
+      <ModalLoader
+        :message="$t('TRANSACTION.LEDGER_SIGN_WAIT')"
+        :visible="showLedgerLoader"
+      />
+    </form>
+  </div>
 </template>
 
 <script>
@@ -361,7 +361,8 @@ export default {
     },
 
     async resolveUnikName () {
-      this.unikname = await UnikNameService.resolveUnikName(this.recipientUnikName)
+      let currentUnikname = this.$store.getters['session/unikname']
+      this.unikname = await UnikNameService.resolveUnikName(this.recipientUnikName, currentUnikname)
       if (this.unikname && this.unikname.resolver && this.unikname.resolver.address) {
         this.form.recipientId = this.unikname.resolver.address
       }

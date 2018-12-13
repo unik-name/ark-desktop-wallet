@@ -11,6 +11,7 @@ export default {
     language: null,
     isMarketChartEnabled: true,
     name: null,
+    unikname: null,
     profileId: null,
     theme: null,
     contentProtection: true,
@@ -50,6 +51,7 @@ export default {
     language: state => state.language,
     bip39Language: state => state.bip39Language,
     name: state => state.name,
+    unikname: state => state.unikname,
     hasDarkTheme: state => state.theme === 'dark',
     contentProtection: state => state.contentProtection,
     backgroundUpdateLedger: state => state.backgroundUpdateLedger,
@@ -85,6 +87,10 @@ export default {
       state.name = name
     },
 
+    SET_UNIKNAME (state, unikname) {
+      state.unikname = unikname
+    },
+
     SET_PROFILE_ID (state, profileId) {
       state.profileId = profileId
     },
@@ -113,6 +119,7 @@ export default {
       state.language = I18N.defaultLocale
       state.bip39Language = 'english'
       state.name = null
+      state.unikname = null
       state.theme = 'light'
       state.backgroundUpdateLedger = true
       state.contentProtection = true
@@ -130,6 +137,7 @@ export default {
       dispatch('setCurrency', profile.currency)
       dispatch('setIsMarketChartEnabled', profile.isMarketChartEnabled)
       dispatch('setName', profile.name)
+      dispatch('setUnikname', profile.unikname)
       dispatch('setLanguage', profile.language)
       dispatch('setBip39Language', profile.bip39Language)
       dispatch('setTheme', profile.theme)
@@ -170,6 +178,10 @@ export default {
 
     setName ({ commit }, value) {
       commit('SET_NAME', value)
+    },
+
+    setUnikname ({ commit }, value) {
+      commit('SET_UNIKNAME', value)
     },
 
     setContentProtection ({ commit }, value) {

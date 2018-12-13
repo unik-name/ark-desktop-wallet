@@ -38,6 +38,11 @@ export default new BaseModel({
       minLength: 1,
       maxLength: 120
     },
+    unikname: {
+      type: 'string',
+      minLength: 1,
+      maxLength: 40
+    },
     networkId: {},
     theme: {
       type: 'string',

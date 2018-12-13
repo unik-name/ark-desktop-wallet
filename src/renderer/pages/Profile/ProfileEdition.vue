@@ -62,6 +62,44 @@
                 </button>
               </ListDividedItem>
 
+              <ListDividedItem
+                :label="$t('COMMON.PROFILE_UNIKNAME')"
+                class="ProfileEdition__name"
+              >
+                <InputText
+                  v-if="isNameEditable"
+                  v-model="$v.modified.unikname.$model"
+                  label=""
+                  :is-invalid="$v.modified.unikname.$dirty && $v.modified.unikname.$invalid"
+                  :helper-text="nameError"
+                  class="bg-transparent text-theme-page-text flex-1"
+                  name="unikname"
+                  @input="setUnikname"
+                  @keyup.enter.native="toggleIsNameEditable"
+                  @keyup.esc.native="toggleIsNameEditable"
+                />
+                <div
+                  v-else
+                  :class="{
+                    'ProfileEdition__field--modified': modified.unikname && modified.unikname !== profile.unikname
+                  }"
+                  class="leading-tight border-b border-transparent flex-1"
+                >
+                  {{ unikname }}
+                </div>
+
+                <button
+                  :disabled="$v.modified.unikname.$dirty && $v.modified.unikname.$invalid"
+                  class="ProfileEdition__name__toggle ml-2 cursor-pointer text-grey hover:text-blue inline-flex"
+                  @click="toggleIsNameEditable"
+                >
+                  <SvgIcon
+                    name="edit"
+                    view-box="0 0 11 14"
+                  />
+                </button>
+              </ListDividedItem>
+
               <ListDividedItem :label="$t('COMMON.LANGUAGE')">
                 <MenuDropdown
                   :class="{
@@ -124,7 +162,7 @@
                   @select="selectAvatar"
                 />
               </ListDividedItem>
-            </ListDivided>
+            </listdivided>
           </MenuTabItem>
 
           <MenuTabItem
@@ -207,6 +245,7 @@ export default {
     isNameEditable: false,
     modified: {
       name: '',
+      unikname: '',
       language: '',
       bip39Language: '',
       currency: ''
@@ -279,6 +318,9 @@ export default {
     name () {
       return this.modified.name || this.profile.name
     },
+    unikname () {
+      return this.modified.unikname || this.profile.unikname
+    },
     networkId () {
       return this.modified.networkId || this.profile.networkId
     },
@@ -301,6 +343,9 @@ export default {
       }
 
       return null
+    },
+    uniknameError () { // TODO unikname errors
+      return null
     }
   },
 
@@ -317,6 +362,7 @@ export default {
 
   mounted () {
     this.modified.name = this.profile.name
+    this.modified.unikname = this.profile.unikname
     this.modified.language = this.profile.language
     this.modified.bip39Language = this.profile.bip39Language
     this.modified.currency = this.profile.currency
@@ -374,6 +420,11 @@ export default {
       this.$v.modified.name.$touch()
     },
 
+    setUnikname (event) {
+      this.__updateSession('unikname', this.modified.unikname)
+      this.$v.modified.unikname.$touch()
+    },
+
     async __updateSession (propertyName, value) {
       this.$set(this.modified, propertyName, value)
 
@@ -397,6 +448,8 @@ export default {
         minLength (value) {
           return value.length >= Profile.schema.properties.name.minLength
         }
+      },
+      unikname: { // TODO Validations
       }
     }
   }

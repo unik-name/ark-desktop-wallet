@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export default class UnikNameService {
-  static getUnikName (unikname) {
+  static getUnikName (unikname, currentUnikname) {
     let headers = {
       // 'Cache-Control': undefined,
       // 'X-Requested-With': undefined,
@@ -11,11 +11,9 @@ export default class UnikNameService {
       // 'x-pm-apiversion': undefined
     }
 
-    // if (unikNameFrom) {
-    //   headers['Authorization'] = `Basic ${unikNameFrom}`
-    // } else {
-    //   $scope.data.fromUnikName = undefined
-    // }
+    if (currentUnikname) {
+      headers['Authorization'] = `Basic ${currentUnikname.replace('@', '')}`
+    }
 
     let uniknameAndLabel = unikname.replace('@', '').split('#')
 
@@ -26,11 +24,11 @@ export default class UnikNameService {
     })
   }
 
-  static async resolveUnikName (unikname) {
+  static async resolveUnikName (unikname, currentUnikname) {
     let result
     try {
       if (unikname && unikname.indexOf('@') === 0) {
-        let resolvedUnikname = await this.getUnikName(unikname)
+        let resolvedUnikname = await this.getUnikName(unikname, currentUnikname)
         result = resolvedUnikname.data
       } else {
         result = {
@@ -46,7 +44,7 @@ export default class UnikNameService {
           case 401:
           case 403:
           case 404:
-            result = { error: response.data }
+            result = { error: response.data, status: response.status }
             break
           default:
             throw (e)
